@@ -22,6 +22,11 @@ class CategoriesController extends Controller
      */
     public function index()
     {
+        $category = Category::with('parent')
+            ->whereHas('parent',function ($query){
+                $query->where('name','Category 2');
+            })
+            ->get();
         /*
          * SELECT categories.*,parents.name as parent_name FROM
          * categories JOIN categories as parents
@@ -138,7 +143,6 @@ class CategoriesController extends Controller
 
         $category = Category::create($request->all());
 
-
         /* Method #3 (Mass Assignment) */
         //$category = new Category([
         // 'name' => $request->post('name'),
@@ -150,7 +154,7 @@ class CategoriesController extends Controller
         // $category->save();
 
         //PRG (post redirect get)
-        return redirect()->route('category.index')
+        return redirect()->route('categories.index')
             ->with('success', 'Category Created');
 
     }
@@ -174,12 +178,12 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
         /* This mean => $category = Category::where('id','=',$id)->first();
         'id' based on primary key in categories table
         So if the primary key was 'name' then Category::find($id);
         will be Category::where('name','=',$id)->first(); */
-        $parents = Category::where('id', '<>', $category->id)->get();
+        $parents = Category::withTrashed()->where('id', '<>', $category->id)->get();
 
         return view('admin.categories.edit')->with([
             'category' => $category,
@@ -195,6 +199,7 @@ class CategoriesController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -204,7 +209,7 @@ class CategoriesController extends Controller
             'status' => 'required|in:active,draft',
             'image' => 'image|max:512000|dimensions:min_width=300,min_height=300'
         ]);
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
         // Method #1
         /*$category->name = $request->post('name');
         $category->parent_id = $request->post('parent_id');
@@ -222,7 +227,7 @@ class CategoriesController extends Controller
         //Category::where('id', '=', $id)->update( $request->all() );
 
         //PRG (post redirect get)
-        return redirect()->route('category.index')
+        return redirect()->route('categories.index')
             ->with('success', 'Category Updated');
 
     }
@@ -236,7 +241,7 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
         //Method #1
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
         $category->delete();
 
         //Method #2
@@ -258,7 +263,7 @@ class CategoriesController extends Controller
         /* session()->flash('success', 'Category Deleted'); */
 
         //PRG (post redirect get)
-        return redirect()->route('category.index');
+        return redirect()->route('categories.index');
         // return redirect()->route('category.index')->with('success', 'Category Deleted'); // flash
     }
 }

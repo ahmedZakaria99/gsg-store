@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\PersonalAccessToken;
+use App\Models\Role;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Sanctum\Sanctum;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +28,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        foreach (config('abilities') as $key => $value) {
+            Gate::define($key, function ($user) use ($key) {
+                return $user->hasAbility($key);
+            });
+        }
+
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+
     }
 }

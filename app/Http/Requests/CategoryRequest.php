@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\Filter;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Route;
 
 class CategoryRequest extends FormRequest
 {
@@ -22,6 +23,7 @@ class CategoryRequest extends FormRequest
      *
      * @return array
      */
+
     public function rules()
     {
         return [

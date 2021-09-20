@@ -26,7 +26,7 @@ class CategoriesTableSeeder extends Seeder
              VALUES('First Category', 'first-category', 'active')");*/
 
         // Query Builder
-        for($i = 1 ; $i <= 10 ; $i++){
+        for ($i = 1; $i <= 10; $i++) {
             DB::table('categories')->insert([
                 'name' => 'Category ' . $i,
                 'slug' => 'category-' . $i,
@@ -40,6 +40,7 @@ class CategoriesTableSeeder extends Seeder
             'slug' => 'category-model',
             'status' => 'draft',
         ]);
+
 
 
     }

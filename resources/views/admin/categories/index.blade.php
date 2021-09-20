@@ -6,7 +6,7 @@
     </ol>
 @endsection
 @section('title')
-    {{$title}} <a href="{{ route('category.create') }}">Create</a>
+    {{$title}} <a href="{{ route('categories.create') }}">Create</a>
 @endsection
 @section('content')
     @if($success)
@@ -38,9 +38,9 @@
                 <td>{{ $category->parent_name }}</td>
                 <td>{{ $category->status }}</td>
                 <td>{{ $category->created_at }}</td>
-                <td><a href="{{ route('category.edit', $category->id) }}" class="btn-sm btn-dark">Edit</a></td>
+                <td><a href="{{ route('categories.edit', $category->id) }}" class="btn-sm btn-dark">Edit</a></td>
                 <td>
-                    <form action="{{ route('category.destroy', $category->id) }}" method="post">
+                    <form action="{{ route('categories.destroy', $category->id) }}" method="post">
                         @csrf
                         @method('delete')
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>

@@ -21,9 +21,9 @@ class CreateProductsTable extends Migration
             $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
             $table->text('description')->nullable();
             $table->string('image_path')->nullable();
-            $table->unsignedFloat('price')->default(0);
-            $table->unsignedFloat('sale_price')->default(0);
-            $table->unsignedSmallInteger('quantity')->default(0);
+            $table->unsignedFloat('price')->nullable();
+            $table->unsignedFloat('sale_price')->nullable();
+            $table->unsignedSmallInteger('quantity')->nullable();
             $table->string('sku')->unique()->nullable();
             $table->unsignedFloat('weight')->nullable();
             $table->unsignedFloat('width')->nullable();
